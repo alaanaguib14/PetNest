@@ -1,5 +1,8 @@
 FROM php:8.3-fpm
 
+# Install Composer FIRST (before anything else)
+COPY --from=composer:latest /usr/local/bin/composer /usr/local/bin/composer
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -15,9 +18,6 @@ RUN apt-get update && apt-get install -y \
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
-# Install Composer
-COPY --from=composer:latest /usr/local/bin/composer /usr/local/bin/composer
 
 # Set working directory
 WORKDIR /var/www
