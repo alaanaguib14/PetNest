@@ -1,8 +1,5 @@
 FROM php:8.3-fpm
 
-# Install Composer FIRST (before anything else)
-COPY --from=composer:latest /usr/local/bin/composer /usr/local/bin/composer
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -19,10 +16,13 @@ RUN apt-get update && apt-get install -y \
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
+# Install Composer directly (no multi-stage copy)
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # Set working directory
 WORKDIR /var/www
 
-# Copy composer files first (better Docker layer caching)
+# Copy composer files first
 COPY composer.json composer.lock ./
 
 # Install PHP dependencies
@@ -31,7 +31,7 @@ RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interactio
 # Copy the rest of the project
 COPY . .
 
-# Run post-install scripts now that full project is copied
+# Run post-install scripts
 RUN composer dump-autoload --optimize
 
 # Set permissions
