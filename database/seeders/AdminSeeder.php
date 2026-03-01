@@ -13,6 +13,10 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        if (User::where('role_id', 1)->exists()) {
+            return;
+        }
+
         User::create([
             'name' => 'alaa Super admin',
             'email' =>'admin@gmail.com',
