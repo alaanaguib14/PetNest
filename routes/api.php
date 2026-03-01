@@ -58,4 +58,6 @@ Route::post('/products/{id}/restore',[AdminProductController::class, 'restore'])
 Route::get('/orders',[AdminOrderController::class, 'index']);
 Route::get('/orders/{id}',[AdminOrderController::class, 'show']);
 Route::patch('/orders/{id}/status',[AdminOrderController::class, 'updateStatus']);
+Route::delete('/orders/{id}', [AdminOrderController::class, 'destroy']);
+Route::post('/orders/{id}/restore', [AdminOrderController::class, 'restore']);
 });

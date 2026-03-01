@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -14,7 +15,10 @@ class CategoryController extends Controller
             return Category::withCount('products')->get();
         });
 
-        return response()->json(['success' => true, 'data' => $categories]);
+        return response()->json([
+            'success' => true, 
+            'data' => CategoryResource::collection($categories)
+        ]);
     }
 
     public function show($id)
@@ -23,6 +27,9 @@ class CategoryController extends Controller
             return Category::withCount('products')->findOrFail($id);
         });
 
-        return response()->json(['success' => true, 'data' => $category]);
+        return response()->json([
+            'success' => true, 
+            'data' => new CategoryResource($category)
+        ]);
     }
 }

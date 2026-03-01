@@ -20,7 +20,10 @@ class OrderController extends Controller
             ->latest()
             ->paginate(10);
 
-        return response()->json(['success' => true, 'data' => $orders]);
+        return response()->json([
+            'success' => true, 
+            'data' => $orders
+        ]);
     }
     public function show($id)
     {

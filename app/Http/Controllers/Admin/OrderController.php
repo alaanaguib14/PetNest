@@ -34,15 +34,33 @@ class OrderController extends Controller
         $request->validate([
             'status' => 'required|in:pending,ongoing,delivered,cancelled',
         ]);
-
         $order = Order::findOrFail($id);
         $order->update([
             'status' => $request->status
         ]);
-
         return response()->json([
             'success' => true, 
             'data' => $order
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->delete();
+        return response()->json([
+            'success' => true, 
+            'message' => 'Order soft deleted'
+        ]);
+    }
+
+    public function restore($id)
+    {
+        $order = Order::withTrashed()->findOrFail($id);
+        $order->restore();
+        return response()->json([
+            'success' => true, 
+            'message' => 'Order restored'
         ]);
     }
 }
