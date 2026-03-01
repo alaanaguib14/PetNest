@@ -20,8 +20,13 @@ Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'emailVerificati
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
 
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
-Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api');
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout',  [AuthController::class, 'logout']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::get('/profile', function (Request $request) {
+        return $request->user();
+    });
+});
 
 Route::prefix('admin')->middleware(['auth:api', 'role:admin'])->group(function () {
     Route::post('/register', [AdminAuthController::class, 'registerAdmin']);
