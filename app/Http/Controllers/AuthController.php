@@ -51,6 +51,7 @@ class AuthController extends Controller
     }
 
     public function logout(){
+        JWTAuth::invalidate(JWTAuth::getToken());
         auth()->logout();
         return response()->json([
             'success' => true,
@@ -87,7 +88,12 @@ class AuthController extends Controller
         ]);
 
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
+            [
+                'email' => $request->email,
+                'password' => $request->password,
+                'password_confirmation' => $request->password_confirmation,
+                'token' => $request->token,
+            ],
             function ($user, $password){
                 $user->password = bcrypt($password);
                 $user->save();
