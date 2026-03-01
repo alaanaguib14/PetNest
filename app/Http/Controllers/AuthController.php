@@ -17,7 +17,7 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $validated['password'],
-            'role_id' => $request->input('role_id', 2), 
+            'role_id' => 2,
         ]);    
 
         event(new Registered($user));
@@ -51,7 +51,6 @@ class AuthController extends Controller
     }
 
     public function logout(){
-        JWTAuth::invalidate(JWTAuth::getToken());
         auth()->logout();
         return response()->json([
             'success' => true,
@@ -95,7 +94,7 @@ class AuthController extends Controller
                 'token' => $request->token,
             ],
             function ($user, $password){
-                $user->password = bcrypt($password);
+                $user->password = $password;
                 $user->save();
             }
         );
@@ -106,6 +105,12 @@ class AuthController extends Controller
     }
 
     public function emailVerification(Request $request, $id,$hash){
+        if (! $request->hasValidSignature()) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Invalid or expired link'
+            ], 403);
+        }
         $user = User::findOrFail($id);
 
         if(!hash_equals($hash,sha1($user->getEmailForVerification()))){
