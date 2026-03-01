@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\ProductController;
@@ -30,6 +32,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/profile', function (Request $request) {
         return $request->user();
     });
+    Route::get('/orders',[OrderController::class, 'index']);
+    Route::get('/orders/{id}',[OrderController::class, 'show']);
+    Route::post('/orders',[OrderController::class, 'store']);
 });
 
 // admin
@@ -49,4 +54,8 @@ Route::post('/products',[AdminProductController::class, 'store']);
 Route::patch('/products/{id}',[AdminProductController::class, 'update']);
 Route::delete('/products/{id}',[AdminProductController::class, 'destroy']);
 Route::post('/products/{id}/restore',[AdminProductController::class, 'restore']);
+
+Route::get('/orders',[AdminOrderController::class, 'index']);
+Route::get('/orders/{id}',[AdminOrderController::class, 'show']);
+Route::patch('/orders/{id}/status',[AdminOrderController::class, 'updateStatus']);
 });
