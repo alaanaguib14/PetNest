@@ -43,7 +43,7 @@ COPY docker/nginx.conf /etc/nginx/sites-available/default
 
 # Copy and set startup script permissions
 COPY docker/start.sh /start.sh
-RUN chmod +x /start.sh
+RUN sed -i 's/\r$//' /start.sh && chmod +x /start.sh
 
 EXPOSE 80
 

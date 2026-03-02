@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e 
 echo "Starting PetNest..."
 
 # Create .env file from Railway environment variables
