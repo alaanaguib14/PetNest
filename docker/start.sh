@@ -38,6 +38,10 @@ echo ".env file created"
 php-fpm -D
 sleep 3  # give PHP-FPM time to start
 
+# Verify PHP-FPM is listening
+echo "Checking PHP-FPM..."
+netstat -tlnp | grep 8080 || echo "PHP-FPM NOT listening on 8080!"
+
 echo "PHP-FPM started"
 
 # Now run Laravel commands
@@ -48,6 +52,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 php artisan storage:link
+
 
 echo "Setup complete. Starting Nginx..."
 
