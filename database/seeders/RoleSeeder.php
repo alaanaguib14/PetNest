@@ -13,14 +13,17 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        if(Role::where('name', 'Admin')->exists()){
-            return;
+        $roles = [
+            ['id' => 1, 'name' => 'Admin'],
+            ['id' => 2, 'name' => 'User'],
+        ];
+
+        foreach ($roles as $role) {
+            if (Role::where('id', $role['id'])->exists()) {
+                continue;
+            }
+
+            Role::create($role);
         }
-        Role::create([
-            'name' => 'Admin'
-        ]);
-        Role::create([
-            'name' => 'User'
-        ]);
     }
 }

@@ -13,7 +13,7 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        if (User::where('email', 'admin@gmail.com')->exists()) {
+        if (User::where('role_id', 1)->exists()) {
             return;
         }
 
