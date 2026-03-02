@@ -8,6 +8,9 @@ php artisan key:generate --force
 # Run migrations
 php artisan migrate --force
 
+# seed Roles (safe — checks if they exist first)
+php artisan db:seed --class=RoleSeeder --force
+
 # Seed admin (safe — checks if admin exists first)
 php artisan db:seed --class=AdminSeeder --force
 
