@@ -11,6 +11,14 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/', function(){
+    return response()->json([
+        'success' => true,
+        'message' => 'welcome to PetNest! to start get to Register or login via https://petnest-production.up.railway.app/api/register or https://petnest-production.up.railway.app/api/login'
+    ]);
+});
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);

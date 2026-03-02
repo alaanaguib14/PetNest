@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e 
+set -e
+
 echo "Starting PetNest..."
 
 # Create .env file from Railway environment variables
@@ -33,29 +34,22 @@ EOF
 
 echo ".env file created"
 
-# Generate app key if APP_KEY not set
-if [ -z "${APP_KEY}" ]; then
-    php artisan key:generate --force
-fi
+# Start PHP-FPM FIRST and wait for it to be ready
+php-fpm -D
+sleep 3  # give PHP-FPM time to start
 
-# Run migrations
+echo "PHP-FPM started"
+
+# Now run Laravel commands
 php artisan migrate --force
-
-# Seed Roles
 php artisan db:seed --class=RoleSeeder --force
-
-# Seed Admin
 php artisan db:seed --class=AdminSeeder --force
-
-# Cache everything
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
-
-# Storage link
 php artisan storage:link
 
-echo "Setup complete. Starting services..."
+echo "Setup complete. Starting Nginx..."
 
-php-fpm &
+# Start Nginx in foreground
 nginx -g "daemon off;"
