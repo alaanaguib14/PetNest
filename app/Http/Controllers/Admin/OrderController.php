@@ -11,7 +11,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::with('user', 'items.product')
-            ->latest() // ?
+            ->latest()
             ->paginate(15);
 
         return response()->json([

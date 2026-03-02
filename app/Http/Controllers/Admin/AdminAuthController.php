@@ -20,7 +20,7 @@ class AdminAuthController extends Controller
             'role_id' => 1,
         ]);
 
-        event(new Registered($admin));
+        // event(new Registered($admin));
         $token = JWTAuth::fromUser($admin);
         return response()->json([
             'success' => true,

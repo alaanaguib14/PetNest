@@ -20,7 +20,7 @@ class AuthController extends Controller
             'role_id' => 2,
         ]);    
 
-        event(new Registered($user));
+        // event(new Registered($user));
         $token = JWTAuth::fromUser($user);
 
         return response()->json([

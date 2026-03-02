@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
-use App\Mail\OrderConfirmationMail;
+// use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+// use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -76,7 +76,7 @@ class OrderController extends Controller
                 return $order;
             });
 
-            Mail::to($order->user->email)->send(new OrderConfirmationMail($order));
+            // Mail::to($order->user->email)->send(new OrderConfirmationMail($order));
 
             return response()->json([
                 'success' => true,
@@ -86,7 +86,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(), // "Not enough stock for [Dog Food]. Only 2 left."
+                'message' => $e->getMessage(),
             ], 422);
         }
     }
